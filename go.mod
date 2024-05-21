@@ -1,11 +1,13 @@
 module github.com/VinistoisR/zerotrust-exporter
 
-go 1.22.3
+go 1.18
 
 require (
-	github.com/VictoriaMetrics/metrics v1.33.1 // indirect
-	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
-	github.com/cloudflare/cloudflare-go v0.95.0 // indirect
+	github.com/VictoriaMetrics/metrics v1.33.1
+	github.com/cloudflare/cloudflare-go v0.95.0
+)
+
+require (
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
