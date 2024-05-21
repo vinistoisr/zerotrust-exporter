@@ -1,6 +1,6 @@
 module github.com/VinistoisR/zerotrust-exporter
 
-go 1.18
+go 1.22
 
 require (
 	github.com/VictoriaMetrics/metrics v1.33.1

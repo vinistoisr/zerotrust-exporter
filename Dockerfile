@@ -1,5 +1,5 @@
 # Use an official Golang runtime as a parent image
-FROM golang:1.18-alpine
+FROM golang:1.22-alpine
 
 # Install git for go module fetching
 RUN apk add --no-cache git

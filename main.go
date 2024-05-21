@@ -24,15 +24,28 @@ var (
 )
 
 func init() {
-	// Define command-line flags
-	flag.StringVar(&apiKey, "apikey", "", "Cloudflare API key (required)")
-	flag.StringVar(&accountID, "accountid", "", "Cloudflare account ID (required)")
-	flag.BoolVar(&debug, "debug", false, "Enable debug mode")
-	flag.BoolVar(&enableDevices, "devices", false, "Enable devices metrics")
-	flag.BoolVar(&enableUsers, "users", false, "Enable users metrics")
-	flag.BoolVar(&enableTunnels, "tunnels", false, "Enable tunnels metrics")
-	flag.StringVar(&listenAddr, "interface", "", "Listening interface (default: any)")
-	flag.IntVar(&port, "port", 9184, "Listening port (default: 9184)")
+	// Load environment variables if not set by flags
+	apiKey = os.Getenv("API_KEY")
+	accountID = os.Getenv("ACCOUNT_ID")
+	debug = os.Getenv("DEBUG") == "true"
+	enableDevices = os.Getenv("DEVICES") == "true"
+	enableUsers = os.Getenv("USERS") == "true"
+	enableTunnels = os.Getenv("TUNNELS") == "true"
+	listenAddr = os.Getenv("INTERFACE")
+	port = 9184 // Default port
+	if portEnv := os.Getenv("PORT"); portEnv != "" {
+		fmt.Sscanf(portEnv, "%d", &port)
+	}
+
+	// Define command-line flags (override env variables if set)
+	flag.StringVar(&apiKey, "apikey", apiKey, "Cloudflare API key (required)")
+	flag.StringVar(&accountID, "accountid", accountID, "Cloudflare account ID (required)")
+	flag.BoolVar(&debug, "debug", debug, "Enable debug mode")
+	flag.BoolVar(&enableDevices, "devices", enableDevices, "Enable devices metrics")
+	flag.BoolVar(&enableUsers, "users", enableUsers, "Enable users metrics")
+	flag.BoolVar(&enableTunnels, "tunnels", enableTunnels, "Enable tunnels metrics")
+	flag.StringVar(&listenAddr, "interface", listenAddr, "Listening interface (default: any)")
+	flag.IntVar(&port, "port", port, "Listening port (default: 9184)")
 	flag.Parse()
 
 	// Ensure required flags are provided
@@ -58,14 +71,14 @@ func main() {
 		log.Printf("Devices metrics enabled: %v", enableDevices)
 		log.Printf("Users metrics enabled: %v", enableUsers)
 		log.Printf("Tunnels metrics enabled: %v", enableTunnels)
-		log.Printf("API Key: %s", os.Getenv("API_KEY"))
-		log.Printf("Account ID: %s", os.Getenv("ACCOUNT_ID"))
-		log.Printf("Debug: %s", os.Getenv("DEBUG"))
-		log.Printf("Devices: %s", os.Getenv("DEVICES"))
-		log.Printf("Users: %s", os.Getenv("USERS"))
-		log.Printf("Tunnels: %s", os.Getenv("TUNNELS"))
-		log.Printf("Interface: %s", os.Getenv("INTERFACE"))
-		log.Printf("Port: %s", os.Getenv("PORT"))
+		log.Printf("API Key: %s", apiKey)
+		log.Printf("Account ID: %s", accountID)
+		log.Printf("Debug: %v", debug)
+		log.Printf("Devices: %v", enableDevices)
+		log.Printf("Users: %v", enableUsers)
+		log.Printf("Tunnels: %v", enableTunnels)
+		log.Printf("Interface: %s", listenAddr)
+		log.Printf("Port: %d", port)
 	} else {
 		// Print normal startup message
 		log.Printf("Starting server on %s", addr)
