@@ -28,29 +28,34 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
 
 ## Environment Variables
 
-| Variable      | Description                                    | Default Value |
-| ------------- | ---------------------------------------------- | ------------- |
-| `API_KEY`     | Cloudflare API key (required)                  | -             |
-| `ACCOUNT_ID`  | Cloudflare account ID (required)               | -             |
-| `DEBUG`       | Enable debug mode (true/false)                 | false         |
-| `DEVICES`     | Enable devices metrics (true/false)            | false         |
-| `USERS`       | Enable users metrics (true/false)              | false         |
-| `TUNNELS`     | Enable tunnels metrics (true/false)            | false         |
-| `INTERFACE`   | Listening interface (default: any)             | ""            |
-| `PORT`        | Listening port (default: 9184)                 | 9184          |
+If deploying under docker, see the example .Env file - Replace the placeholder values with ones appropriate for your environment. 
+
+
+| Variable      | Description                                    | Default Value | Required? |
+| ------------- | ---------------------------------------------- | ------------- | ------------- |
+| `API_KEY`     | Cloudflare API key (required)                  | -             | Required          |
+| `ACCOUNT_ID`  | Cloudflare account ID (required)               | -             | Required          |
+| `DEBUG`       | Enable debug mode (true/false)                 | false         | Optional          |
+| `DEVICES`     | Enable devices metrics (true/false)            | false         | Optional          |
+| `USERS`       | Enable users metrics (true/false)              | false         | Optional          |
+| `TUNNELS`     | Enable tunnels metrics (true/false)            | false         | Optional          |
+| `INTERFACE`   | Listening interface (default: any)             | ""            | Optional          |
+| `PORT`        | Listening port (default: 9184)                 | 9184          | Optional
 
 ## Command-Line Flags
 
-| Flag          | Description                                    | Default Value |
-| ------------- | ---------------------------------------------- | ------------- |
-| `-apikey`     | Cloudflare API key (required)                  | -             |
-| `-accountid`  | Cloudflare account ID (required)               | -             |
-| `-debug`      | Enable debug mode (true/false)                 | false         |
-| `-devices`    | Enable devices metrics (true/false)            | false         |
-| `-users`      | Enable users metrics (true/false)              | false         |
-| `-tunnels`    | Enable tunnels metrics (true/false)            | false         |
-| `-interface`  | Listening interface (default: any)             | ""            |
-| `-port`       | Listening port (default: 9184)                 | 9184          |
+If running from the command line, use the following command line flags. 
+
+| Flag          | Description                                    | Default Value | Required? |
+| ------------- | ---------------------------------------------- | ------------- | ------------- |
+| `-apikey`     | Cloudflare API key (required)                  | -             | Required          |
+| `-accountid`  | Cloudflare account ID (required)               | -             | Required          |
+| `-debug`      | Enable debug mode (true/false)                 | false         | Optional          |
+| `-devices`    | Enable devices metrics (true/false)            | false         | Optional          |
+| `-users`      | Enable users metrics (true/false)              | false         | Optional          |
+| `-tunnels`    | Enable tunnels metrics (true/false)            | false         | Optional          |
+| `-interface`  | Listening interface (default: any)             | ""            | Optional          |
+| `-port`       | Listening port (default: 9184)                 | 9184          | Optional
 
 ## Usage
 
