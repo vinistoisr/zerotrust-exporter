@@ -8,7 +8,12 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
 - Supports both command-line flags and environment variables for configuration
 - Docker support for containerized deployments
 
-## Metrics
+## Go Libraries Used
+
+- [VictoriaMetrics/metrics](https://github.com/VictoriaMetrics/metrics) - Metrics library for Prometheus.
+- [cloudflare/cloudflare-go](https://github.com/cloudflare/cloudflare-go) - Cloudflare API client for Go.
+
+## Metrics Collected
 
 | Metric Name                                          | Description                                     | Labels                                     | Type      |
 | ---------------------------------------------------- | ----------------------------------------------- | ------------------------------------------ | --------- |
@@ -20,10 +25,6 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
 | `zerotrust_users_access_seat`                        | User access seat status                         | email, id, gateway_seat                    | Gauge     |
 | `zerotrust_tunnels_status`                           | Tunnel status                                   | id, name                                   | Gauge     |
 
-## Libraries Used
-
-- [VictoriaMetrics/metrics](https://github.com/VictoriaMetrics/metrics) - Metrics library for Prometheus.
-- [cloudflare/cloudflare-go](https://github.com/cloudflare/cloudflare-go) - Cloudflare API client for Go.
 
 ## Environment Variables
 
@@ -53,6 +54,19 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
 
 ## Usage
 
+### Docker Deployment
+
+1. Build the Docker image:
+
+    ```sh
+    docker build -t zerotrust-exporter .
+    ```
+
+2. Run the Docker container:
+
+    ```sh
+    docker run -d -p 9184:9184 --env-file .env zerotrust-exporter
+    ```
 ### Running Locally
 
 1. Clone the repository:
@@ -95,19 +109,7 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
     ./zerotrust-exporter -apikey=your_api_key -accountid=your_account_id -debug=true -devices=true -users=true -tunnels=true -interface=0.0.0.0 -port=9184
     ```
 
-### Docker Deployment
 
-1. Build the Docker image:
-
-    ```sh
-    docker build -t zerotrust-exporter .
-    ```
-
-2. Run the Docker container:
-
-    ```sh
-    docker run -d -p 9184:9184 --env-file .env zerotrust-exporter
-    ```
 
 ## License
 
