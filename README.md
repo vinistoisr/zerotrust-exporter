@@ -8,6 +8,23 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
 - Supports both command-line flags and environment variables for configuration
 - Docker support for containerized deployments
 
+## Metrics
+
+| Metric Name                                          | Description                                     | Labels                                     | Type      |
+| ---------------------------------------------------- | ----------------------------------------------- | ------------------------------------------ | --------- |
+| `zerotrust_exporter_up`                              | Exporter up status                              | -                                          | Gauge     |
+| `zerotrust_exporter_scrape_duration_seconds`         | Duration of the scrape in seconds               | -                                          | Histogram |
+| `zerotrust_exporter_api_calls_total`                 | Total number of API calls made                  | -                                          | Counter   |
+| `zerotrust_exporter_api_errors_total`                | Total number of API errors encountered          | -                                          | Counter   |
+| `zerotrust_devices_up`                               | Device up status                                | device_type, id, ip, user_id, user_email, name | Gauge     |
+| `zerotrust_users_access_seat`                        | User access seat status                         | email, id, gateway_seat                    | Gauge     |
+| `zerotrust_tunnels_status`                           | Tunnel status                                   | id, name                                   | Gauge     |
+
+## Libraries Used
+
+- [VictoriaMetrics/metrics](https://github.com/VictoriaMetrics/metrics) - Metrics library for Prometheus.
+- [cloudflare/cloudflare-go](https://github.com/cloudflare/cloudflare-go) - Cloudflare API client for Go.
+
 ## Environment Variables
 
 | Variable      | Description                                    | Default Value |
@@ -91,23 +108,6 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
     ```sh
     docker run -d -p 9184:9184 --env-file .env zerotrust-exporter
     ```
-
-## Metrics
-
-| Metric Name                                          | Description                                     | Labels                                     | Type      |
-| ---------------------------------------------------- | ----------------------------------------------- | ------------------------------------------ | --------- |
-| `zerotrust_exporter_up`                              | Exporter up status                              | -                                          | Gauge     |
-| `zerotrust_exporter_scrape_duration_seconds`         | Duration of the scrape in seconds               | -                                          | Histogram |
-| `zerotrust_exporter_api_calls_total`                 | Total number of API calls made                  | -                                          | Counter   |
-| `zerotrust_exporter_api_errors_total`                | Total number of API errors encountered          | -                                          | Counter   |
-| `zerotrust_devices_up`                               | Device up status                                | device_type, id, ip, user_id, user_email, name | Gauge     |
-| `zerotrust_users_access_seat`                        | User access seat status                         | email, id, gateway_seat                    | Gauge     |
-| `zerotrust_tunnels_status`                           | Tunnel status                                   | id, name                                   | Gauge     |
-
-## Libraries Used
-
-- [VictoriaMetrics/metrics](https://github.com/VictoriaMetrics/metrics) - Metrics library for Prometheus.
-- [cloudflare/cloudflare-go](https://github.com/cloudflare/cloudflare-go) - Cloudflare API client for Go.
 
 ## License
 
