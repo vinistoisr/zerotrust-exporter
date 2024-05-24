@@ -13,7 +13,7 @@ import (
 )
 
 // collectTunnelMetrics collects metrics for tunnels
-func collectTunnelMetrics() {
+func CollectTunnelMetrics() {
 	collector.ApiCallCounter.Inc()
 
 	ctx := context.Background()

@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/cloudflare/cloudflare-go"
+	"github.com/vinistoisr/zerotrust-exporter/internal/collector"
 	"github.com/vinistoisr/zerotrust-exporter/internal/config"
 )
 
@@ -87,7 +88,7 @@ func main() {
 		log.Printf("Starting server on %s", addr)
 	}
 
-	metrics.RegisterHandler()
-	metrics.StartServer(addr)
+	collector.RegisterHandler()
+	collector.StartServer(addr)
 
 }
