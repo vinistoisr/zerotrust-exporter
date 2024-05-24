@@ -22,9 +22,9 @@ type DeviceStatus struct {
 	Platform    string `json:"platform"`
 	Version     string `json:"version"`
 	Timestamp   string `json:"timestamp"`
-	DeviceName  string `json:"device_name"`
-	DeviceID    string `json:"device_id"`
-	PersonEmail string `json:"person_email"`
+	DeviceName  string `json:"deviceName"`
+	DeviceID    string `json:"deviceId"`
+	PersonEmail string `json:"personEmail"`
 }
 
 func fetchDeviceStatus(ctx context.Context, client *cloudflare.API, accountID string) (map[string]DeviceStatus, error) {
@@ -40,7 +40,7 @@ func fetchDeviceStatus(ctx context.Context, client *cloudflare.API, accountID st
 	q.Add("per_page", "50")
 	q.Add("page", "1")
 	q.Add("time_end", time.Unix(time.Now().Unix(), 0).Format(time.RFC3339))
-	q.Add("time_start", time.Unix(time.Now().Add(-time.Minute*3).Unix(), 0).Format(time.RFC3339))
+	q.Add("time_start", time.Unix(time.Now().Add(-time.Minute*10).Unix(), 0).Format(time.RFC3339))
 	q.Add("sort_by", "device_id")
 	q.Add("status", "connected")
 	q.Add("source", "last_seen")
