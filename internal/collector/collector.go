@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/VictoriaMetrics/metrics"
-	"github.com/vinistoisr/zerotrust_exporter/internal/config"
-	"github.com/vinistoisr/zerotrust_exporter/internal/devices"
-	"github.com/vinistoisr/zerotrust_exporter/internal/tunnels"
-	"github.com/vinistoisr/zerotrust_exporter/internal/users"
+	"github.com/vinistoisr/zerotrust-exporter/internal/config"
+	"github.com/vinistoisr/zerotrust-exporter/internal/devices"
+	"github.com/vinistoisr/zerotrust-exporter/internal/tunnels"
+	"github.com/vinistoisr/zerotrust-exporter/internal/users"
 )
 
 // Prometheus Endpoint metrics

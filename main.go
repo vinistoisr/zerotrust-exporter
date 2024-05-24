@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/vinistoisr/zerotrust_exporter/internal/config"
+	"github.com/vinistoisr/zerotrust-exporter/internal/config"
 )
 
 // Command-line flags
