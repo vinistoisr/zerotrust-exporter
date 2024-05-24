@@ -77,7 +77,6 @@ func fetchDeviceStatus(ctx context.Context, accountID string) (map[string]Device
 }
 
 func CollectDeviceMetrics() map[string]DeviceStatus {
-	log.Println("Collecting device metrics...")
 	appmetrics.IncApiCallCounter()
 	ctx := context.Background()
 	startTime := time.Now()
