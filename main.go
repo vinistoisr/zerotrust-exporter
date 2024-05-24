@@ -75,14 +75,8 @@ func main() {
 		log.Printf("Devices metrics enabled: %v", enableDevices)
 		log.Printf("Users metrics enabled: %v", enableUsers)
 		log.Printf("Tunnels metrics enabled: %v", enableTunnels)
-		log.Printf("API Key: %s", apiKey)
+		log.Printf("API Key: %s%s", "************", apiKey[len(apiKey)-4:])
 		log.Printf("Account ID: %s", accountID)
-		log.Printf("Debug: %v", debug)
-		log.Printf("Devices: %v", enableDevices)
-		log.Printf("Users: %v", enableUsers)
-		log.Printf("Tunnels: %v", enableTunnels)
-		log.Printf("Interface: %s", listenAddr)
-		log.Printf("Port: %d", port)
 	} else {
 		// Print normal startup message
 		log.Printf("Starting server on %s", addr)
