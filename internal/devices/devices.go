@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/VictoriaMetrics/metrics"
-	"github.com/cloudflare/cloudflare-go"
 	"github.com/vinistoisr/zerotrust-exporter/internal/appmetrics"
 	"github.com/vinistoisr/zerotrust-exporter/internal/config"
 )
@@ -27,7 +26,7 @@ type DeviceStatus struct {
 	PersonEmail string `json:"personEmail"`
 }
 
-func fetchDeviceStatus(ctx context.Context, client *cloudflare.API, accountID string) (map[string]DeviceStatus, error) {
+func fetchDeviceStatus(ctx context.Context, accountID string) (map[string]DeviceStatus, error) {
 	url := fmt.Sprintf("https://api.cloudflare.com/client/v4/accounts/%s/dex/fleet-status/devices", accountID)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
@@ -83,7 +82,7 @@ func CollectDeviceMetrics() map[string]DeviceStatus {
 	ctx := context.Background()
 	startTime := time.Now()
 
-	deviceStatuses, err := fetchDeviceStatus(ctx, config.Client, config.AccountID)
+	deviceStatuses, err := fetchDeviceStatus(ctx, config.AccountID)
 	if err != nil {
 		log.Printf("Error fetching device status: %v", err)
 		appmetrics.IncApiErrorsCounter()
