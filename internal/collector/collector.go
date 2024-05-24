@@ -7,18 +7,11 @@ import (
 	"time"
 
 	"github.com/VictoriaMetrics/metrics"
+	"github.com/vinistoisr/zerotrust-exporter/internal/appmetrics"
 	"github.com/vinistoisr/zerotrust-exporter/internal/config"
 	"github.com/vinistoisr/zerotrust-exporter/internal/devices"
 	"github.com/vinistoisr/zerotrust-exporter/internal/tunnels"
 	"github.com/vinistoisr/zerotrust-exporter/internal/users"
-)
-
-// Prometheus Endpoint metrics
-var (
-	UpMetric         = metrics.NewGauge("zerotrust_exporter_up", func() float64 { return 1 })
-	ScrapeDuration   = metrics.NewHistogram("zerotrust_exporter_scrape_duration_seconds")
-	ApiCallCounter   = metrics.NewCounter("zerotrust_exporter_api_calls_total")
-	ApiErrorsCounter = metrics.NewCounter("zerotrust_exporter_api_errors_total")
 )
 
 // Register metrics handler
@@ -87,14 +80,14 @@ func MetricsHandler(w http.ResponseWriter, req *http.Request) {
 	log.Println("All metrics collection completed.")
 
 	// Update scrape duration metric
-	ScrapeDuration.UpdateDuration(startTime)
+	appmetrics.ScrapeDuration.UpdateDuration(startTime)
 	// Write metrics to the response
 	metrics.WritePrometheus(w, true)
 
 	// Print debug information if enabled
 	if config.Debug {
 		log.Printf("Scrape completed in %v", time.Since(startTime))
-		log.Printf("API calls made: %d", ApiCallCounter.Get())
-		log.Printf("API errors encountered: %d", ApiErrorsCounter.Get())
+		log.Printf("API calls made: %d", appmetrics.ApiCallCounter.Get())
+		log.Printf("API errors encountered: %d", appmetrics.ApiErrorsCounter.Get())
 	}
 }

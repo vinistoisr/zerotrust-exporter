@@ -11,7 +11,7 @@ import (
 
 	"github.com/VictoriaMetrics/metrics"
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/vinistoisr/zerotrust-exporter/internal/collector"
+	"github.com/vinistoisr/zerotrust-exporter/internal/appmetrics"
 	"github.com/vinistoisr/zerotrust-exporter/internal/config"
 )
 
@@ -52,7 +52,7 @@ func fetchDeviceStatus(ctx context.Context, client *cloudflare.API, accountID st
 		return nil, err
 	}
 	defer resp.Body.Close()
-	collector.ApiCallCounter.Inc()
+	appmetrics.IncApiCallCounter()
 
 	if resp.StatusCode != http.StatusOK {
 		bodyBytes, _ := io.ReadAll(resp.Body)
@@ -79,15 +79,15 @@ func fetchDeviceStatus(ctx context.Context, client *cloudflare.API, accountID st
 
 func CollectDeviceMetrics() map[string]DeviceStatus {
 	log.Println("Collecting device metrics...")
-	collector.ApiCallCounter.Inc()
+	appmetrics.IncApiCallCounter()
 	ctx := context.Background()
 	startTime := time.Now()
 
 	deviceStatuses, err := fetchDeviceStatus(ctx, config.Client, config.AccountID)
 	if err != nil {
 		log.Printf("Error fetching device status: %v", err)
-		collector.ApiErrorsCounter.Inc()
-		collector.UpMetric.Set(0)
+		appmetrics.IncApiErrorsCounter()
+		appmetrics.SetUpMetric(0)
 		return nil
 	}
 

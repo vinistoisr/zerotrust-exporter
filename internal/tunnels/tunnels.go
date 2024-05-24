@@ -8,14 +8,13 @@ import (
 
 	"github.com/VictoriaMetrics/metrics"
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/vinistoisr/zerotrust-exporter/internal/collector"
+	"github.com/vinistoisr/zerotrust-exporter/internal/appmetrics"
 	"github.com/vinistoisr/zerotrust-exporter/internal/config"
 )
 
 // collectTunnelMetrics collects metrics for tunnels
 func CollectTunnelMetrics() {
-	collector.ApiCallCounter.Inc()
-
+	appmetrics.IncApiCallCounter()
 	ctx := context.Background()
 	rc := &cloudflare.ResourceContainer{Level: cloudflare.AccountRouteLevel, Identifier: config.AccountID}
 	startTime := time.Now()
@@ -23,8 +22,8 @@ func CollectTunnelMetrics() {
 	tunnels, _, err := config.Client.ListTunnels(ctx, rc, cloudflare.TunnelListParams{})
 	if err != nil {
 		log.Printf("Error fetching tunnels: %v", err)
-		collector.ApiErrorsCounter.Inc()
-		collector.UpMetric.Set(0)
+		appmetrics.IncApiErrorsCounter()
+		appmetrics.SetUpMetric(0)
 		return
 	}
 

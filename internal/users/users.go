@@ -8,7 +8,7 @@ import (
 
 	"github.com/VictoriaMetrics/metrics"
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/vinistoisr/zerotrust-exporter/internal/collector"
+	"github.com/vinistoisr/zerotrust-exporter/internal/appmetrics"
 	"github.com/vinistoisr/zerotrust-exporter/internal/config"
 	"github.com/vinistoisr/zerotrust-exporter/internal/devices"
 )
@@ -42,17 +42,17 @@ func fetchAllUsers(ctx context.Context) (map[string]*cloudflare.AccessUser, erro
 }
 
 // collectUserMetrics collects metrics for users
-func collectUserMetrics(deviceMetrics map[string]devices.DeviceStatus) {
+func CollectUserMetrics(deviceMetrics map[string]devices.DeviceStatus) {
 	log.Println("Starting collectUserMetrics...")
-	collector.ApiCallCounter.Inc()
+	appmetrics.IncApiCallCounter()
 
 	ctx := context.Background()
 	// Fetch users from Cloudflare API
 	users, err := fetchAllUsers(ctx)
 	if err != nil {
 		log.Printf("Error fetching users: %v", err)
-		collector.ApiErrorsCounter.Inc()
-		collector.UpMetric.Set(0)
+		appmetrics.IncApiErrorsCounter()
+		appmetrics.SetUpMetric(0)
 		return
 	}
 
