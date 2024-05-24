@@ -4,10 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/cloudflare/cloudflare-go"
+	"github.com/vinistoisr/zerotrust_exporter/internal/config"
 )
 
 // Command-line flags
@@ -61,6 +61,9 @@ func init() {
 	if err != nil {
 		log.Fatalf("Failed to create Cloudflare client: %v", err)
 	}
+
+	// Initialize config
+	config.InitConfig(apiKey, accountID, debug, enableDevices, enableUsers, enableTunnels, client)
 }
 
 func main() {
@@ -84,10 +87,7 @@ func main() {
 		log.Printf("Starting server on %s", addr)
 	}
 
-	// Register metrics handler
-	http.HandleFunc("/metrics", metricsHandler)
-	// Start HTTP server
-	if err := http.ListenAndServe(addr, nil); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
-	}
+	metrics.RegisterHandler()
+	metrics.StartServer(addr)
+
 }
