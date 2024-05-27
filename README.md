@@ -22,7 +22,7 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
 | `zerotrust_exporter_api_calls_total`                 | Total number of API calls made                  | -                                          | Counter   |
 | `zerotrust_exporter_api_errors_total`                | Total number of API errors encountered          | -                                          | Counter   |
 | `zerotrust_devices_up`                           | Device up status                                     | device_type, id, ip, user_id, user_email, name | Gauge     |
-| `zerotrust_users_up`                                  | User up status                                   | email, id, gateway_seat                    | Gauge     |
+| `zerotrust_users_up`                                  | User up status                                   | email, id, gateway_seat, access_seat         | Gauge     |
 | `zerotrust_tunnels_up`                           | Tunnel status                                      | id, name                                        | Gauge     |
 | `zerotrust_traceroute_rtt`                           | Traceroute round-trip time                      | test_id, test_name                          | Gauge     |
 | `zerotrust_traceroute_packet_loss`                  | Traceroute packet loss                          | test_id, test_name                           | Gauge     |
