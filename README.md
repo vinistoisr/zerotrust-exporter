@@ -79,6 +79,14 @@ If running from the command line, use the following command line flags.
     ```sh
     docker run -d -p 9184:9184 --env-file .env zerotrust-exporter
     ```
+
+or, pull from the github container registry:
+
+    ```sh
+    docker pull ghcr.io/vinistoisr/zerotrust-exporter:latest
+    docker run -d -p 9184:9184 --env-file .env vinistoisr/zerotrust-exporter
+    ```
+
 ### Running Locally
 
 1. Clone the repository:
