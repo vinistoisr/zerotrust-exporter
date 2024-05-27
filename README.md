@@ -7,11 +7,33 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
 - Provides detailed scrape duration and API call metrics
 - Supports both command-line flags and environment variables for configuration
 - Docker support for containerized deployments
+- Leverages Go Routines for concurrent API calls
+- Independent metrics collection for devices, users, tunnels, and dex tests enabled by flags
+- Debug mode for verbose logging
+- Customizable listening interface and port
+- Exposes metrics in Prometheus compatible format
+- Designed to be extendable for additional metrics upon feature request
+
 
 ## Go Libraries Used
 
 - [VictoriaMetrics/metrics](https://github.com/VictoriaMetrics/metrics) - Metrics library for Prometheus.
 - [cloudflare/cloudflare-go](https://github.com/cloudflare/cloudflare-go) - Cloudflare API client for Go.
+
+Note: Not all API endpoints used are available in the official Cloudflare API client. The exporter uses the official client for most API calls and makes direct HTTP requests for unsupported endpoints. These unsupported endpoints are marked as beta directly in the API responses:
+
+```
+  "messages": [
+    {
+      "code": 1000,
+      "message": "API in beta: expect breaking changes."
+    }]
+```
+
+This project will aim to use the official client for all API calls once the endpoints are implemented.
+
+Please report any issues or bugs you encounter while using this exporter. Contributions are welcome!
+
 
 ## Metrics Collected
 
@@ -31,38 +53,26 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
 | `zerotrust_dex_test_1h_avg_ms`                     | DEX test average latency over the last hour     | test_id, test_name, description, host, kind   |  Gauge     |
 
 
-## Environment Variables
+## Configuration
 
-If deploying under docker, see the example .Env file - Replace the placeholder values with ones appropriate for your environment. 
+If deploying under docker, please pass the Environment Variables or use a .Env file.
+
+If deploying on the command line, you can pass the flags directly or use environment variables.
 
 
-| Variable      | Description                                    | Default Value | Required? |
-| ------------- | ---------------------------------------------- | ------------- | ------------- |
-| `API_KEY`     | Cloudflare API key (required)                  | -             | Required          |
-| `ACCOUNT_ID`  | Cloudflare account ID (required)               | -             | Required          |
-| `DEBUG`       | Enable debug mode (true/false)                 | false         | Optional          |
-| `DEVICES`     | Enable devices metrics (true/false)            | false         | Optional          |
-| `USERS`       | Enable users metrics (true/false)              | false         | Optional          |
-| `TUNNELS`     | Enable tunnels metrics (true/false)            | false         | Optional          |
-| `DEX`         | Enable dex test metrics (true/false)           | false         | Optional          |
-| `INTERFACE`   | Listening interface (default: any)             | ""            | Optional          |
-| `PORT`        | Listening port (default: 9184)                 | 9184          | Optional          |
+| Environment Variable      | Command-Line Flag | Description                    | Default Value | Required?         |
+| ------------- | ------------- | ---------------------------------------------- | ------------- | -------------     |
+| `API_KEY`     | `-apikey`     | Cloudflare API key (required)                  | -             | Required          |
+| `ACCOUNT_ID`  | `-accountid`  | Cloudflare account ID (required)               | -             | Required          |
+| `DEBUG`       | `-debug`      | Enable debug mode (true/false)                 | false         | Optional          |
+| `DEVICES`     | `-devices`    | Enable devices metrics (true/false)            | false         | Optional          |
+| `USERS`       | `-users`      | Enable users metrics (true/false)              | false         | Optional          |
+| `TUNNELS`     | `-tunnels`    | Enable tunnels metrics (true/false)            | false         | Optional          |
+| `DEX`         | `-dex`        | Enable dex test metrics (true/false)           | false         | Optional          |
+| `INTERFACE`   | `-interface`  | Listening interface (default: any)             | ""            | Optional          |
+| `PORT`        | `-port`       | Listening port (default: 9184)                 | 9184          | Optional          |
+| `FLAG`        | `-flag`       | Command line flag equivalent                   | -             | -                 |
 
-## Command-Line Flags
-
-If running from the command line, use the following command line flags. 
-
-| Flag          | Description                                    | Default Value | Required? |
-| ------------- | ---------------------------------------------- | ------------- | ------------- |
-| `-apikey`     | Cloudflare API key (required)                  | -             | Required          |
-| `-accountid`  | Cloudflare account ID (required)               | -             | Required          |
-| `-debug`      | Enable debug mode (true/false)                 | false         | Optional          |
-| `-devices`    | Enable devices metrics (true/false)            | false         | Optional          |
-| `-users`      | Enable users metrics (true/false)              | false         | Optional          |
-| `-tunnels`    | Enable tunnels metrics (true/false)            | false         | Optional          |
-| `-dex`        | Enable dex test metrics (true/false)           | false         | Optional          |
-| `-interface`  | Listening interface (default: any)             | ""            | Optional          |
-| `-port`       | Listening port (default: 9184)                 | 9184          | Optional          |
 
 ## Usage
 
