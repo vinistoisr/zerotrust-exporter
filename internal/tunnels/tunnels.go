@@ -19,7 +19,8 @@ func CollectTunnelMetrics() {
 	rc := &cloudflare.ResourceContainer{Level: cloudflare.AccountRouteLevel, Identifier: config.AccountID}
 	startTime := time.Now()
 	// Fetch tunnels from Cloudflare API
-	tunnels, _, err := config.Client.ListTunnels(ctx, rc, cloudflare.TunnelListParams{})
+	isDeleted := false
+	tunnels, _, err := config.Client.ListTunnels(ctx, rc, cloudflare.TunnelListParams{IsDeleted: &isDeleted})
 	if err != nil {
 		log.Printf("Error fetching tunnels: %v", err)
 		appmetrics.IncApiErrorsCounter()
