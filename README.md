@@ -3,6 +3,7 @@
 Zero Trust Exporter is a Prometheus exporter written in Go that collects and exposes metrics from Cloudflare's Zero Trust API. It is designed to provide visibility into devices, users, and tunnels managed by Cloudflare Zero Trust.
 
 ## Features
+
 - Collects metrics for devices, users, tunnels, and dex tests from Cloudflare Zero Trust API
 - Provides detailed scrape duration and API call metrics
 - Supports both command-line flags and environment variables for configuration
@@ -14,7 +15,6 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
 - Exposes metrics in Prometheus compatible format
 - Designed to be extendable for additional metrics upon feature request
 
-
 ## Go Libraries Used
 
 - [VictoriaMetrics/metrics](https://github.com/VictoriaMetrics/metrics) - Metrics library for Prometheus.
@@ -22,7 +22,7 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
 
 Note: Not all API endpoints used are available in the official Cloudflare API client. The exporter uses the official client for most API calls and makes direct HTTP requests for unsupported endpoints. These unsupported endpoints are marked as beta directly in the API responses:
 
-```
+```json
   "messages": [
     {
       "code": 1000,
@@ -33,7 +33,6 @@ Note: Not all API endpoints used are available in the official Cloudflare API cl
 This project will aim to use the official client for all API calls once the endpoints are implemented.
 
 Please report any issues or bugs you encounter while using this exporter. Contributions are welcome!
-
 
 ## Metrics Collected
 
@@ -52,13 +51,11 @@ Please report any issues or bugs you encounter while using this exporter. Contri
 | `zerotrust_traceroute_availability`                 | Traceroute availability                         | test_id, test_name                          | Gauge     |
 | `zerotrust_dex_test_1h_avg_ms`                     | DEX test average latency over the last hour     | test_id, test_name, description, host, kind   |  Gauge     |
 
-
 ## Configuration
 
 If deploying under docker, please pass the Environment Variables or use a .Env file.
 
 If deploying on the command line, you can pass the flags directly or use environment variables.
-
 
 | Environment Variable      | Command-Line Flag | Description                    | Default Value | Required?         |
 | ------------- | ------------- | ---------------------------------------------- | ------------- | -------------     |
@@ -72,7 +69,6 @@ If deploying on the command line, you can pass the flags directly or use environ
 | `INTERFACE`   | `-interface`  | Listening interface (default: any)             | ""            | Optional          |
 | `PORT`        | `-port`       | Listening port (default: 9184)                 | 9184          | Optional          |
 | `FLAG`        | `-flag`       | Command line flag equivalent                   | -             | -                 |
-
 
 ## Usage
 
@@ -139,8 +135,6 @@ or, pull from the github container registry:
     ```sh
     ./zerotrust-exporter -apikey=your_api_key -accountid=your_account_id -debug=true -devices=true -users=true -tunnels=true -dex=true -interface=0.0.0.0 -port=9184
     ```
-
-
 
 ## License
 
