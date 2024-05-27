@@ -30,11 +30,15 @@ func fetchDeviceStatus(ctx context.Context, accountID string) (map[string]Device
 	url := fmt.Sprintf("https://api.cloudflare.com/client/v4/accounts/%s/dex/fleet-status/devices", accountID)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
+		log.Printf("Error creating request: %v", err)
+		appmetrics.IncApiErrorsCounter()
+		appmetrics.SetUpMetric(0)
 		return nil, err
 	}
+	// add authorization headers
 	req.Header.Set("Authorization", "Bearer "+config.ApiKey)
 	req.Header.Set("Content-Type", "application/json")
-
+	// define query parameters
 	q := req.URL.Query()
 	q.Add("per_page", "50")
 	q.Add("page", "1")
@@ -43,26 +47,28 @@ func fetchDeviceStatus(ctx context.Context, accountID string) (map[string]Device
 	q.Add("sort_by", "device_id")
 	q.Add("status", "connected")
 	q.Add("source", "last_seen")
-
+	// add query parameters to the request
 	req.URL.RawQuery = q.Encode()
-
+	// send the request
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
+	// defer closing the response body
 	defer resp.Body.Close()
+	// increment the api call counter
 	appmetrics.IncApiCallCounter()
-
+	// parse the status code if not ok
 	if resp.StatusCode != http.StatusOK {
 		bodyBytes, _ := io.ReadAll(resp.Body)
 		bodyString := string(bodyBytes)
 		return nil, fmt.Errorf("failed to fetch device status: %s, response body: %s", resp.Status, bodyString)
 	}
-
+	// parse the response body into a struct
 	var response struct {
 		Result []DeviceStatus `json:"result"`
 	}
-
+	// decode the response body
 	err = json.NewDecoder(resp.Body).Decode(&response)
 	if err != nil {
 		return nil, err

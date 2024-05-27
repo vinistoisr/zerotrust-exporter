@@ -1,6 +1,7 @@
 package collector
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"sync"
@@ -10,6 +11,7 @@ import (
 	"github.com/vinistoisr/zerotrust-exporter/internal/appmetrics"
 	"github.com/vinistoisr/zerotrust-exporter/internal/config"
 	"github.com/vinistoisr/zerotrust-exporter/internal/devices"
+	"github.com/vinistoisr/zerotrust-exporter/internal/dex"
 	"github.com/vinistoisr/zerotrust-exporter/internal/tunnels"
 	"github.com/vinistoisr/zerotrust-exporter/internal/users"
 )
@@ -30,13 +32,12 @@ func StartServer(addr string) {
 func MetricsHandler(w http.ResponseWriter, req *http.Request) {
 	// Start timer for scrape duration
 	startTime := time.Now()
-
-	// Using goroutines to collect metrics for devices, users, and tunnels concurrently
+	// create a channel between device metrics and user metrics
 	deviceMetricsChan := make(chan map[string]devices.DeviceStatus)
 
 	// Create a wait group to wait for all goroutines to complete
 	var wg sync.WaitGroup
-	wg.Add(3)
+	wg.Add(4)
 
 	// GO Collect device metrics
 	go func() {
@@ -71,6 +72,15 @@ func MetricsHandler(w http.ResponseWriter, req *http.Request) {
 		if config.EnableTunnels {
 			log.Println("Collecting tunnel metrics...")
 			tunnels.CollectTunnelMetrics()
+		}
+	}()
+
+	// Go Collect dex metrics
+	go func() {
+		defer wg.Done()
+		if config.EnableDex {
+			log.Println("Collecting dex metrics...")
+			dex.CollectDexMetrics(context.TODO(), config.AccountID)
 		}
 	}()
 

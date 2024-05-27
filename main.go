@@ -19,6 +19,7 @@ var (
 	enableDevices bool
 	enableUsers   bool
 	enableTunnels bool
+	enableDex     bool
 	listenAddr    string
 	port          int
 	client        *cloudflare.API
@@ -32,6 +33,7 @@ func init() {
 	enableDevices = os.Getenv("DEVICES") == "true"
 	enableUsers = os.Getenv("USERS") == "true"
 	enableTunnels = os.Getenv("TUNNELS") == "true"
+	enableDex = os.Getenv("DEX") == "true"
 	listenAddr = os.Getenv("INTERFACE")
 	port = 9184 // Default port
 	if portEnv := os.Getenv("PORT"); portEnv != "" {
@@ -45,6 +47,7 @@ func init() {
 	flag.BoolVar(&enableDevices, "devices", enableDevices, "Enable devices metrics")
 	flag.BoolVar(&enableUsers, "users", enableUsers, "Enable users metrics")
 	flag.BoolVar(&enableTunnels, "tunnels", enableTunnels, "Enable tunnels metrics")
+	flag.BoolVar(&enableDex, "dex", enableDex, "Enable dex metrics")
 	flag.StringVar(&listenAddr, "interface", listenAddr, "Listening interface (default: any)")
 	flag.IntVar(&port, "port", port, "Listening port (default: 9184)")
 	flag.Parse()
@@ -64,7 +67,7 @@ func init() {
 	}
 
 	// Initialize config
-	config.InitConfig(apiKey, accountID, debug, enableDevices, enableUsers, enableTunnels, client)
+	config.InitConfig(apiKey, accountID, debug, enableDevices, enableUsers, enableTunnels, enableDex, client)
 }
 
 func main() {
@@ -75,6 +78,7 @@ func main() {
 		log.Printf("Devices metrics enabled: %v", enableDevices)
 		log.Printf("Users metrics enabled: %v", enableUsers)
 		log.Printf("Tunnels metrics enabled: %v", enableTunnels)
+		log.Printf("Dex metrics enabled: %v", enableDex)
 		log.Printf("API Key: %s%s", "************", apiKey[len(apiKey)-4:])
 		log.Printf("Account ID: %s", accountID)
 	} else {
