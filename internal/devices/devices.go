@@ -107,7 +107,7 @@ func CollectDeviceMetrics() map[string]DeviceStatus {
 	}
 
 	for deviceID, status := range filteredDevices {
-		metricName := fmt.Sprintf(`zerotrust_devices_status{device_id="%s", device_name="%s", user_email="%s", colo="%s", mode="%s", platform="%s", version="%s"}`, deviceID, status.DeviceName, status.PersonEmail, status.Colo, status.Mode, status.Platform, status.Version)
+		metricName := fmt.Sprintf(`zerotrust_devices_up{device_id="%s", device_name="%s", user_email="%s", colo="%s", mode="%s", platform="%s", version="%s"}`, deviceID, status.DeviceName, status.PersonEmail, status.Colo, status.Mode, status.Platform, status.Version)
 		gauge := metrics.GetOrCreateGauge(metricName, nil)
 		gauge.Set(1)
 	}

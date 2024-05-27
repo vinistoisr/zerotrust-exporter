@@ -21,14 +21,14 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
 | `zerotrust_exporter_scrape_duration_seconds`         | Duration of the scrape in seconds               | -                                          | Histogram |
 | `zerotrust_exporter_api_calls_total`                 | Total number of API calls made                  | -                                          | Counter   |
 | `zerotrust_exporter_api_errors_total`                | Total number of API errors encountered          | -                                          | Counter   |
-| `zerotrust_devices_status`                           | Device up status                                | device_type, id, ip, user_id, user_email, name | Gauge     |
+| `zerotrust_devices_up`                           | Device up status                                     | device_type, id, ip, user_id, user_email, name | Gauge     |
 | `zerotrust_users_up`                                  | User up status                                   | email, id, gateway_seat                    | Gauge     |
-| `zerotrust_tunnels_status`                           | Tunnel status                                   | id, name                                   | Gauge     |
-| `zerotrust_traceroute_rtt`                           | Traceroute round-trip time                      | id, name, source, destination, hop          | Gauge     |
-| `zerotrust_traceroute_packet_loss`                  | Traceroute packet loss                          | id, name, source, destination, hop          | Gauge     |
-| `zerotrust_traceroute_hops`                         | Traceroute hop count                            | id, name, source, destination               | Gauge     |
-| `zerotrust_traceroute_availability`                 | Traceroute availability                         | id, name, source, destination               | Gauge     |
-| `zerotrust_dex_test_1h_avg_ms`                     | DEX test average latency over the last hour     | id, name                                   | Gauge     |
+| `zerotrust_tunnels_up`                           | Tunnel status                                      | id, name                                        | Gauge     |
+| `zerotrust_traceroute_rtt`                           | Traceroute round-trip time                      | test_id, test_name                          | Gauge     |
+| `zerotrust_traceroute_packet_loss`                  | Traceroute packet loss                          | test_id, test_name                           | Gauge     |
+| `zerotrust_traceroute_hops`                         | Traceroute hop count                            | test_id, test_name               | Gauge     |
+| `zerotrust_traceroute_availability`                 | Traceroute availability                         | test_id, test_name                          | Gauge     |
+| `zerotrust_dex_test_1h_avg_ms`                     | DEX test average latency over the last hour     | test_id, test_name, description, host, kind   |  Gauge     |
 
 
 ## Environment Variables

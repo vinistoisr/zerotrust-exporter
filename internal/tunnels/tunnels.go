@@ -37,6 +37,6 @@ func CollectTunnelMetrics() {
 		if tunnel.Status == "healthy" {
 			status = 1
 		}
-		metrics.GetOrCreateGauge(fmt.Sprintf(`zerotrust_tunnels_status{id="%s", name="%s"}`, tunnel.ID, tunnel.Name), func() float64 { return float64(status) })
+		metrics.GetOrCreateGauge(fmt.Sprintf(`zerotrust_tunnels_up{id="%s", name="%s"}`, tunnel.ID, tunnel.Name), func() float64 { return float64(status) })
 	}
 }
