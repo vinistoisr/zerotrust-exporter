@@ -3,7 +3,7 @@
 Zero Trust Exporter is a Prometheus exporter written in Go that collects and exposes metrics from Cloudflare's Zero Trust API. It is designed to provide visibility into devices, users, and tunnels managed by Cloudflare Zero Trust.
 
 ## Features
-- Collects metrics for devices, users, and tunnels from Cloudflare Zero Trust API
+- Collects metrics for devices, users, tunnels, and dex tests from Cloudflare Zero Trust API
 - Provides detailed scrape duration and API call metrics
 - Supports both command-line flags and environment variables for configuration
 - Docker support for containerized deployments
@@ -21,9 +21,14 @@ Zero Trust Exporter is a Prometheus exporter written in Go that collects and exp
 | `zerotrust_exporter_scrape_duration_seconds`         | Duration of the scrape in seconds               | -                                          | Histogram |
 | `zerotrust_exporter_api_calls_total`                 | Total number of API calls made                  | -                                          | Counter   |
 | `zerotrust_exporter_api_errors_total`                | Total number of API errors encountered          | -                                          | Counter   |
-| `zerotrust_devices_up`                               | Device up status                                | device_type, id, ip, user_id, user_email, name | Gauge     |
-| `zerotrust_users_access_seat`                        | User access seat status                         | email, id, gateway_seat                    | Gauge     |
+| `zerotrust_devices_status`                           | Device up status                                | device_type, id, ip, user_id, user_email, name | Gauge     |
+| `zerotrust_users_up`                                  | User up status                                   | email, id, gateway_seat                    | Gauge     |
 | `zerotrust_tunnels_status`                           | Tunnel status                                   | id, name                                   | Gauge     |
+| `zerotrust_traceroute_rtt`                           | Traceroute round-trip time                      | id, name, source, destination, hop          | Gauge     |
+| `zerotrust_traceroute_packet_loss`                  | Traceroute packet loss                          | id, name, source, destination, hop          | Gauge     |
+| `zerotrust_traceroute_hops`                         | Traceroute hop count                            | id, name, source, destination               | Gauge     |
+| `zerotrust_traceroute_availability`                 | Traceroute availability                         | id, name, source, destination               | Gauge     |
+| `zerotrust_dex_test_1h_avg_ms`                     | DEX test average latency over the last hour     | id, name                                   | Gauge     |
 
 
 ## Environment Variables
@@ -39,8 +44,9 @@ If deploying under docker, see the example .Env file - Replace the placeholder v
 | `DEVICES`     | Enable devices metrics (true/false)            | false         | Optional          |
 | `USERS`       | Enable users metrics (true/false)              | false         | Optional          |
 | `TUNNELS`     | Enable tunnels metrics (true/false)            | false         | Optional          |
+| `DEX`         | Enable dex test metrics (true/false)           | false         | Optional          |
 | `INTERFACE`   | Listening interface (default: any)             | ""            | Optional          |
-| `PORT`        | Listening port (default: 9184)                 | 9184          | Optional
+| `PORT`        | Listening port (default: 9184)                 | 9184          | Optional          |
 
 ## Command-Line Flags
 
@@ -54,8 +60,9 @@ If running from the command line, use the following command line flags.
 | `-devices`    | Enable devices metrics (true/false)            | false         | Optional          |
 | `-users`      | Enable users metrics (true/false)              | false         | Optional          |
 | `-tunnels`    | Enable tunnels metrics (true/false)            | false         | Optional          |
+| `-dex`        | Enable dex test metrics (true/false)           | false         | Optional          |
 | `-interface`  | Listening interface (default: any)             | ""            | Optional          |
-| `-port`       | Listening port (default: 9184)                 | 9184          | Optional
+| `-port`       | Listening port (default: 9184)                 | 9184          | Optional          |
 
 ## Usage
 
@@ -90,6 +97,7 @@ If running from the command line, use the following command line flags.
     DEVICES=true
     USERS=true
     TUNNELS=true
+    DEX=true
     INTERFACE=0.0.0.0
     PORT=9184
     ```
@@ -111,7 +119,7 @@ If running from the command line, use the following command line flags.
 2. Run the binary:
 
     ```sh
-    ./zerotrust-exporter -apikey=your_api_key -accountid=your_account_id -debug=true -devices=true -users=true -tunnels=true -interface=0.0.0.0 -port=9184
+    ./zerotrust-exporter -apikey=your_api_key -accountid=your_account_id -debug=true -devices=true -users=true -tunnels=true -dex=true -interface=0.0.0.0 -port=9184
     ```
 
 
