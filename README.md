@@ -2,6 +2,8 @@
 
 Zero Trust Exporter is a Prometheus exporter written in Go that collects and exposes metrics from Cloudflare's Zero Trust API. It is designed to provide visibility into devices, users, and tunnels managed by Cloudflare Zero Trust.
 
+![zt_screenshot](https://github.com/vinistoisr/zerotrust-exporter/assets/36953653/2fb37d62-d731-4ddc-a61a-726db326ec23)
+
 ## Features
 
 - Collects metrics for devices, users, tunnels, and dex tests from Cloudflare Zero Trust API
