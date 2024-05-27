@@ -23,4 +23,4 @@ RUN go build -o zerotrust-exporter .
 EXPOSE 9184
 
 # Command to run the executable with environment variables
-CMD ["sh", "-c", "./zerotrust-exporter -apikey=${API_KEY} -accountid=${ACCOUNT_ID} -debug=${DEBUG} -devices=${DEVICES} -users=${USERS} -tunnels=${TUNNELS} -interface=${INTERFACE} -port=${PORT}"]
+CMD ["sh", "-c", "./zerotrust-exporter -apikey=${API_KEY} -accountid=${ACCOUNT_ID} -debug=${DEBUG} -devices=${DEVICES} -users=${USERS} -tunnels=${TUNNELS} -dex=${DEX} -interface=${INTERFACE} -port=${PORT}"]
